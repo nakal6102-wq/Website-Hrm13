@@ -28,7 +28,29 @@
       background: var(--surface); padding: 32px; border-radius: 12px; width: 100%; max-width: 400px;
       box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); border: 1px solid var(--border);
     }
-    .auth-card h2 { text-align: center; margin-bottom: 24px; color: var(--primary); }
+    .auth-card h2 { text-align: center; margin-bottom: 8px; color: var(--primary); }
+    .auth-subtitle { text-align: center; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px; }
+
+    /* Contact Info Box */
+    .owner-contact-box {
+      margin-top: 20px;
+      padding: 12px;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      color: #1e40af;
+      text-align: center;
+      line-height: 1.4;
+    }
+    .owner-contact-box a {
+      color: var(--primary);
+      font-weight: bold;
+      text-decoration: none;
+    }
+    .owner-contact-box a:hover {
+      text-decoration: underline;
+    }
 
     /* Form UI */
     .form-group { margin-bottom: 14px; }
@@ -94,20 +116,30 @@
   <div id="loginView" class="auth-container">
     <div class="auth-card">
       <h2>Sistem Pendataan</h2>
-      <div id="loginError" style="color: var(--danger); font-size: 0.85rem; margin-bottom: 12px;" class="hidden">
-        Username/Password salah! (Gunakan: admin / admin123)
+      <p class="auth-subtitle">Akses Terbatas Petugas RT/RW</p>
+
+      <div id="loginError" style="color: var(--danger); font-size: 0.85rem; margin-bottom: 12px; text-align: center;" class="hidden">
+        Username atau Password salah! <br>Silakan hubungi pemilik untuk meminta akses.
       </div>
+
       <form id="loginForm" onsubmit="handleLogin(event)">
         <div class="form-group">
           <label>Username Petugas</label>
-          <input type="text" id="username" class="form-control" placeholder="Masukkan admin" required>
+          <input type="text" id="username" class="form-control" placeholder="Masukkan Username" required>
         </div>
         <div class="form-group">
           <label>Password</label>
-          <input type="password" id="password" class="form-control" placeholder="Masukkan admin123" required>
+          <input type="password" id="password" class="form-control" placeholder="Masukkan Password" required>
         </div>
-        <button type="submit" class="btn btn-primary">Masuk</button>
+        <button type="submit" class="btn btn-primary">Masuk Aplikasi</button>
       </form>
+
+      <!-- Informasi Kontak Pemilik -->
+      <div class="owner-contact-box">
+        Belum punya akun atau lupa password?<br>
+        Hubungi Pemilik Sistem: <br>
+        <a href="https://wa.me/6281280092524" target="_blank">📱 WhatsApp: 0812-8009-2524</a>
+      </div>
     </div>
   </div>
 
@@ -319,8 +351,9 @@
   </div>
 
   <script>
+    // KREDENSIAL AKSES LOGIN (Ubah di sini jika ingin ganti password/username)
     const AUTH_USER = "admin";
-    const AUTH_PASS = "admin123";
+    const AUTH_PASS = "rt006hrm13"; // Ganti dengan password pilihan Anda
 
     let residents = JSON.parse(localStorage.getItem("residentsData_v5")) || [
       {
@@ -411,7 +444,6 @@
       filtered.forEach((r, index) => {
         const age = r.tglLahir ? calculateAge(r.tglLahir) : "-";
         
-        // Warna label khusus jika statusnya Pindah Keluar
         let statusBadgeStyle = "background:#e0e7ff; color:#3730a3;";
         if (r.statusTinggal === "Pindah Keluar") {
           statusBadgeStyle = "background:#fee2e2; color:#991b1b;";
